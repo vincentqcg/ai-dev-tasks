@@ -166,6 +166,40 @@ Please feel free to:
 *   Submit a pull request with your enhancements
 *   Share your adaptations for specific AI agents
 
+## 📋 Release Notes
+
+### Version 2.0 - Universal AI Agent Compatibility Update
+
+We've significantly enhanced all three `.mdc` files to work seamlessly with any AI coding agent. Here's what's new:
+
+#### **create-prd.mdc** Improvements:
+- ✅ **Structured Question Framework** - AI now asks questions in organized categories with minimum requirements
+- ✅ **Complete PRD Template** - Provides exact markdown structure with all sections pre-formatted
+- ✅ **Quality Checkpoints** - Built-in verification checklist before PRD delivery
+- ✅ **Universal Instructions** - Works with both file-system and web-based AI agents
+- ✅ **Enhanced Sections** - Added executive summary, success metrics with checkboxes, and implementation notes
+
+#### **generate-tasks-from-prd.mdc** Improvements:
+- ✅ **Enforced Two-Phase Process** - AI must present parent tasks first and wait for "Go" before generating sub-tasks
+- ✅ **Task Generation Guidelines** - Added parent task categories and verb-based task writing rules
+- ✅ **Comprehensive Output Template** - Includes metadata, file organization, definition of done, and next steps
+- ✅ **Quality Examples** - Shows good vs. bad task titles with specific examples
+- ✅ **Dependency Management** - Ensures tasks are ordered logically based on dependencies
+
+#### **process-task-list.mdc** Improvements:
+- ✅ **Step-by-Step Protocol** - 6-step process that ensures one sub-task at a time implementation
+- ✅ **Visual Progress Indicators** - Added markers like ✓, "CURRENT", "NEXT UP", "JUST COMPLETED"
+- ✅ **Progress Reporting** - Percentage completion, file tracking, and remaining task estimates
+- ✅ **Edge Case Handling** - Protocols for blocked tasks, dependencies, and scope changes
+- ✅ **Emergency Stop** - Clear instructions for halting work when needed
+
+### What These Updates Mean for You:
+- **Better AI Behavior** - More consistent results across different AI models
+- **Clearer Communication** - AI provides structured updates and requests
+- **Improved Quality** - Built-in checks ensure thoroughness
+- **Platform Flexibility** - Same workflow works everywhere
+- **Enhanced Control** - Better stopping points and approval mechanisms
+
 ---
 
 Happy AI-assisted developing with your favorite AI coding agent!
