@@ -1,38 +1,258 @@
 ---
-description: 
+description: Universal Task List Processing and Management for AI Coding Agents
 globs: 
 alwaysApply: false
 ---
-# Task List Management
+# Task List Processing and Management
 
-Guidelines for managing task lists in markdown files to track progress on completing a PRD
+## Goal
+To guide an AI assistant in systematically working through a task list, implementing one sub-task at a time with user verification checkpoints, while maintaining accurate progress tracking.
 
-## Task Implementation
-- **One sub-task at a time:** Do **NOT** start the next sub‑task until you ask the user for permission and they say “yes” or "y"
-- **Completion protocol:**  
-  1. When you finish a **sub‑task**, immediately mark it as completed by changing `[ ]` to `[x]`.  
-  2. If **all** subtasks underneath a parent task are now `[x]`, also mark the **parent task** as completed.  
-- Stop after each sub‑task and wait for the user’s go‑ahead.
+## Critical Rules for AI
+- **STOP after EVERY sub-task** - Never continue to the next sub-task without explicit user approval
+- **ONE sub-task at a time** - Focus completely on the current sub-task before moving on
+- **UPDATE progress immediately** - Mark tasks complete as soon as they're done
+- **WAIT for permission** - Only proceed when user says "yes", "y", "continue", "next", "go", or similar
+- **SHOW your work** - Always display what you've done and what's next
 
-## Task List Maintenance
+## Task Implementation Protocol
 
-1. **Update the task list as you work:**
-   - Mark tasks and subtasks as completed (`[x]`) per the protocol above.
-   - Add new tasks as they emerge.
+### Step 1: Identify Current Task
+Before starting any work:
+```
+Looking at the task list, the next sub-task is:
+[ ] X.Y [Task description]
 
-2. **Maintain the “Relevant Files” section:**
-   - List every file created or modified.
-   - Give each file a one‑line description of its purpose.
+This task involves: [Brief explanation of what you'll do]
+```
 
-## AI Instructions
+### Step 2: Implement the Sub-Task
+- Focus ONLY on the current sub-task
+- Complete all aspects of that specific sub-task
+- Do not start work on any other tasks
+- If you discover new tasks, note them but don't implement them
 
-When working with task lists, the AI must:
+### Step 3: Show Implementation Results
+After completing the sub-task:
+```
+✅ Completed Sub-Task X.Y: [Task description]
 
-1. Regularly update the task list file after finishing any significant work.
-2. Follow the completion protocol:
-   - Mark each finished **sub‑task** `[x]`.
-   - Mark the **parent task** `[x]` once **all** its subtasks are `[x]`.
-3. Add newly discovered tasks.
-4. Keep “Relevant Files” accurate and up to date.
-5. Before starting work, check which sub‑task is next.
-6. After implementing a sub‑task, update the file and then pause for user approval.
+What I did:
+- [Specific action 1]
+- [Specific action 2]
+- [Files created/modified]
+
+The implementation:
+[Show relevant code or changes]
+```
+
+### Step 4: Update Task List Status
+```markdown
+## Updated Task Status:
+
+- [ ] X.0 [Parent Task]
+  - [x] X.1 [Completed sub-task] ✓
+  - [x] X.2 [Completed sub-task] ✓
+  - [x] X.3 [Just completed THIS sub-task] ✓ ← JUST COMPLETED
+  - [ ] X.4 [Next sub-task] ← NEXT UP
+  - [ ] X.5 [Future sub-task]
+```
+
+### Step 5: Request Permission to Continue
+```
+The sub-task X.Y is now complete. 
+
+Would you like me to proceed with the next sub-task (X.Z - [Brief description])?
+Please respond with 'yes' to continue or provide feedback if changes are needed.
+```
+
+### Step 6: WAIT for User Response
+- ⏸️ **FULL STOP** - Do not proceed without permission
+- Only continue if user explicitly approves
+- If user provides feedback, address it before moving on
+
+## Task List Maintenance Rules
+
+### 1. Completion Marking Protocol
+```markdown
+# Before (working on task 2.2):
+- [ ] 2.0 Implement User Authentication
+  - [x] 2.1 Create user model ✓
+  - [ ] 2.2 Build login endpoint ← CURRENT
+  - [ ] 2.3 Add password hashing
+
+# After completing 2.2:
+- [ ] 2.0 Implement User Authentication
+  - [x] 2.1 Create user model ✓
+  - [x] 2.2 Build login endpoint ✓ ← JUST COMPLETED
+  - [ ] 2.3 Add password hashing ← NEXT UP
+```
+
+### 2. Parent Task Completion
+Mark parent task complete ONLY when ALL sub-tasks are done:
+```markdown
+# When all sub-tasks are complete:
+- [x] 2.0 Implement User Authentication ✓ (All sub-tasks complete!)
+  - [x] 2.1 Create user model ✓
+  - [x] 2.2 Build login endpoint ✓
+  - [x] 2.3 Add password hashing ✓
+```
+
+### 3. Relevant Files Section Updates
+Keep the files section current after EACH sub-task:
+```markdown
+## Relevant Files
+
+### Created in this session:
+- `models/User.js` - User model with authentication fields (Task 2.1)
+- `routes/auth.js` - Authentication endpoints (Task 2.2)
+- `middleware/auth.js` - JWT verification middleware (Task 2.3)
+
+### Modified in this session:
+- `server.js` - Added auth routes (Task 2.2)
+- `package.json` - Added bcrypt and jsonwebtoken (Task 2.3)
+```
+
+### 4. Discovered Tasks Addition
+When you discover new necessary tasks:
+```markdown
+## Newly Discovered Tasks (Added during implementation):
+- [ ] X.6 [New task discovered while working] (Found during task X.3)
+- [ ] Y.0 New Parent Task (if needed)
+  - [ ] Y.1 [New sub-task]
+```
+
+## Progress Reporting Format
+
+### After Each Sub-Task Completion:
+```
+📊 Progress Update:
+- Completed: X.Y [Task name]
+- Progress: [X/Total] sub-tasks complete (XX%)
+- Next up: X.Z [Next task name]
+- Estimated remaining tasks: [Number]
+
+Files touched in this sub-task:
+- Created: [filename] - [purpose]
+- Modified: [filename] - [what changed]
+```
+
+## Visual Progress Indicators
+
+Use these indicators for clarity:
+- `[ ]` - Not started
+- `[x]` - Completed
+- `✓` - Checkmark for completed items
+- `← CURRENT` - Currently working on
+- `← NEXT UP` - Next task to work on
+- `← JUST COMPLETED` - Just finished
+
+## Handling Edge Cases
+
+### 1. Blocked Tasks
+If a task cannot be completed:
+```
+⚠️ Task X.Y is blocked because: [Reason]
+
+Options:
+1. Skip to next task (X.Z)
+2. Add prerequisite task
+3. Modify approach
+
+How would you like to proceed?
+```
+
+### 2. Task Dependencies
+If a task depends on an incomplete task:
+```
+🔗 Task X.Y depends on incomplete task W.Z
+
+Should I:
+1. Complete W.Z first
+2. Find an alternative approach
+3. Skip for now and add to notes
+```
+
+### 3. Scope Changes
+If implementation reveals scope changes:
+```
+📝 While implementing X.Y, I discovered:
+- [New requirement or complexity]
+
+This would require:
+- [Additional tasks or changes]
+
+Should I:
+1. Add new sub-tasks
+2. Modify current approach
+3. Note for future consideration
+```
+
+## Platform-Specific Instructions
+
+### For AI with File System Access:
+- Update the task list file directly after each sub-task
+- Show file diffs when updating
+- Commit changes if using version control
+
+### For AI without File System Access:
+- Display the updated task list section after each sub-task
+- Instruct user to update their file
+- Provide clear copy-paste sections
+
+## Quality Checklist Per Sub-Task
+
+Before marking any sub-task complete, verify:
+- [ ] Sub-task is fully implemented
+- [ ] Code works as expected
+- [ ] Any new files are listed in Relevant Files
+- [ ] Any discovered tasks are documented
+- [ ] Progress has been clearly communicated
+- [ ] User approval has been requested
+
+## Example Interaction Flow
+
+```
+AI: Looking at the task list, the next sub-task is:
+    [ ] 2.2 Build login endpoint
+    This task involves creating a POST /api/login endpoint with JWT generation.
+
+[AI implements the task]
+
+AI: ✅ Completed Sub-Task 2.2: Build login endpoint
+
+What I did:
+- Created POST /api/login endpoint in routes/auth.js
+- Added JWT token generation
+- Implemented error handling for invalid credentials
+
+[Shows code]
+
+Updated Task Status:
+- [ ] 2.0 Implement User Authentication
+  - [x] 2.1 Create user model ✓
+  - [x] 2.2 Build login endpoint ✓ ← JUST COMPLETED
+  - [ ] 2.3 Add password hashing ← NEXT UP
+
+Would you like me to proceed with task 2.3 (Add password hashing)?
+
+User: yes
+
+AI: Starting task 2.3: Add password hashing...
+```
+
+## Critical Reminders
+- **NEVER** skip the approval step
+- **NEVER** implement multiple sub-tasks at once
+- **ALWAYS** show what you did before asking to continue
+- **ALWAYS** update task status immediately after completion
+- **FOCUS** on one sub-task until it's completely done
+
+## Emergency Stop
+If at any point the user says "stop", "wait", "hold on", or similar:
+- Immediately stop all work
+- Save/document current progress
+- Wait for further instructions
+
+---
+*Remember: Patience and systematic progress lead to successful implementation*
