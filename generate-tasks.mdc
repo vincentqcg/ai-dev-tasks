@@ -1,64 +1,245 @@
 ---
-description: 
+description: Universal Task List Generation from PRD for AI Coding Agents
 globs: 
 alwaysApply: false
 ---
 # Rule: Generating a Task List from a PRD
 
 ## Goal
+To guide an AI assistant in creating a detailed, step-by-step task list in Markdown format based on an existing Product Requirements Document (PRD). The task list should guide a developer through implementation with clear, actionable items.
 
-To guide an AI assistant in creating a detailed, step-by-step task list in Markdown format based on an existing Product Requirements Document (PRD). The task list should guide a developer through implementation.
+## Important Instructions for AI
+- **ALWAYS follow the two-phase process** - Generate parent tasks first, wait for confirmation, then generate sub-tasks
+- **Be specific and actionable** - Each task should be a clear, implementable step
+- **Think like a developer** - Order tasks logically based on dependencies
+- **Include testing tasks** - Every feature needs tests
+- **Use the exact format provided** - Do not deviate from the template
 
-## Output
+## Prerequisites
+- User must provide access to a PRD (either as a file reference or pasted content)
+- The PRD should contain functional requirements, user stories, and success criteria
 
-- **Format:** Markdown (`.md`)
-- **Location:** `/tasks/`
-- **Filename:** `tasks-[prd-file-name].md` (e.g., `tasks-prd-user-profile-editing.md`)
+## Process (MUST FOLLOW EXACTLY)
 
-## Process
+### Phase 1: Initial Analysis and Parent Task Generation
 
-1.  **Receive PRD Reference:** The user points the AI to a specific PRD file
-2.  **Analyze PRD:** The AI reads and analyzes the functional requirements, user stories, and other sections of the specified PRD.
-3.  **Phase 1: Generate Parent Tasks:** Based on the PRD analysis, create the file and generate the main, high-level tasks required to implement the feature. Use your judgement on how many high-level tasks to use. It's likely to be about 5. Present these tasks to the user in the specified format (without sub-tasks yet). Inform the user: "I have generated the high-level tasks based on the PRD. Ready to generate the sub-tasks? Respond with 'Go' to proceed."
-4.  **Wait for Confirmation:** Pause and wait for the user to respond with "Go".
-5.  **Phase 2: Generate Sub-Tasks:** Once the user confirms, break down each parent task into smaller, actionable sub-tasks necessary to complete the parent task. Ensure sub-tasks logically follow from the parent task and cover the implementation details implied by the PRD.
-6.  **Identify Relevant Files:** Based on the tasks and PRD, identify potential files that will need to be created or modified. List these under the `Relevant Files` section, including corresponding test files if applicable.
-7.  **Generate Final Output:** Combine the parent tasks, sub-tasks, relevant files, and notes into the final Markdown structure.
-8.  **Save Task List:** Save the generated document in the `/tasks/` directory with the filename `tasks-[prd-file-name].md`, where `[prd-file-name]` matches the base name of the input PRD file (e.g., if the input was `prd-user-profile-editing.md`, the output is `tasks-prd-user-profile-editing.md`).
+1. **Receive PRD Input**
+   - User provides PRD via file reference or pasted content
+   - Acknowledge receipt with: "I've received the PRD. Let me analyze it and create a task list."
 
-## Output Format
+2. **Analyze PRD Thoroughly**
+   - Read all sections carefully
+   - Identify main feature components
+   - Note technical requirements
+   - Understand user flows
+   - Identify dependencies
 
-The generated task list _must_ follow this structure:
+3. **Generate Parent Tasks ONLY**
+   - Create 4-8 high-level parent tasks
+   - Each parent task should represent a major implementation milestone
+   - Number them as 1.0, 2.0, 3.0, etc.
+   - DO NOT include sub-tasks yet
+
+4. **Present Parent Tasks and Wait**
+   ```
+   Based on the PRD, here are the high-level tasks for implementation:
+
+   ## Tasks (High-Level Overview)
+   - [ ] 1.0 [Parent Task 1]
+   - [ ] 2.0 [Parent Task 2]
+   - [ ] 3.0 [Parent Task 3]
+   [etc.]
+
+   I've generated the high-level tasks based on the PRD. These represent the major milestones for implementing this feature.
+   
+   **Ready to generate the detailed sub-tasks? Respond with 'Go' to proceed.**
+   ```
+
+5. **STOP AND WAIT** - Do not proceed until user responds
+
+### Phase 2: Sub-Task Generation (ONLY after user confirms)
+
+6. **Check User Response**
+   - Only proceed if user responds with "Go", "go", "yes", "continue", or similar affirmative
+   - If unclear, ask for clarification
+
+7. **Generate Detailed Sub-Tasks**
+   - Break each parent task into 2-5 specific sub-tasks
+   - Number as X.1, X.2, X.3, etc.
+   - Each sub-task should be independently completable
+   - Include specific implementation details
+
+8. **Identify Relevant Files**
+   - List actual files that need creation/modification
+   - Include test files for each component
+   - Provide brief descriptions of each file's purpose
+
+9. **Generate Complete Output**
+   - Combine everything into the final format
+   - Include helpful notes for implementation
+
+## Task Generation Guidelines
+
+### Parent Task Categories (Use as Reference)
+1. **Setup/Configuration Tasks** (if needed)
+   - Project setup, dependencies, configuration files
+
+2. **Data Model/Schema Tasks**
+   - Database changes, data structures, types/interfaces
+
+3. **Backend/API Tasks**
+   - Server-side logic, API endpoints, business logic
+
+4. **Frontend/UI Tasks**
+   - User interface components, forms, displays
+
+5. **Integration Tasks**
+   - Connecting frontend to backend, external services
+
+6. **Testing Tasks**
+   - Unit tests, integration tests, E2E tests
+
+7. **Documentation/Cleanup Tasks**
+   - Code documentation, README updates, refactoring
+
+### Sub-Task Best Practices
+- Start with verbs: "Create", "Implement", "Add", "Update", "Configure"
+- Be specific: "Create UserProfile component with edit mode" not just "Create component"
+- Include acceptance criteria references: "Implement validation (as per requirement 3.2)"
+- Order by dependency: Database tasks before API tasks before UI tasks
+- Include error handling tasks where appropriate
+
+## Output Format (USE EXACTLY)
 
 ```markdown
+# Task List: [Feature Name from PRD]
+
+**Generated from:** [PRD filename or "Provided PRD"]
+**Date:** [Current Date]
+**Total Tasks:** [X parent tasks, Y sub-tasks]
+
+## Overview
+[1-2 sentence summary of what these tasks will accomplish]
+
 ## Relevant Files
 
-- `path/to/potential/file1.ts` - Brief description of why this file is relevant (e.g., Contains the main component for this feature).
-- `path/to/file1.test.ts` - Unit tests for `file1.ts`.
-- `path/to/another/file.tsx` - Brief description (e.g., API route handler for data submission).
-- `path/to/another/file.test.tsx` - Unit tests for `another/file.tsx`.
-- `lib/utils/helpers.ts` - Brief description (e.g., Utility functions needed for calculations).
-- `lib/utils/helpers.test.ts` - Unit tests for `helpers.ts`.
+### Files to Create
+- `path/to/new/file1.ts` - [Specific purpose, e.g., "User profile data model and types"]
+- `path/to/new/file1.test.ts` - Unit tests for file1.ts
+- `path/to/new/component.tsx` - [Purpose, e.g., "React component for profile editing form"]
+- `path/to/new/component.test.tsx` - Unit tests for component.tsx
 
-### Notes
+### Files to Modify
+- `path/to/existing/file.ts` - [What needs to be added/changed]
+- `path/to/existing/routes.ts` - [What needs to be added/changed]
 
-- Unit tests should typically be placed alongside the code files they are testing (e.g., `MyComponent.tsx` and `MyComponent.test.tsx` in the same directory).
-- Use `npx jest [optional/path/to/test/file]` to run tests. Running without a path executes all tests found by the Jest configuration.
+### Test Files Structure
+- Unit tests: Place alongside source files (e.g., `Component.tsx` → `Component.test.tsx`)
+- Integration tests: `/tests/integration/[feature-name].test.ts`
+- E2E tests: `/tests/e2e/[feature-name].spec.ts`
+
+## Implementation Notes
+- Dependencies to install: [List any required packages]
+- API endpoints needed: [List endpoints from PRD]
+- Key user flows to test: [List main paths]
+- Performance considerations: [Any specific requirements from PRD]
 
 ## Tasks
 
-- [ ] 1.0 Parent Task Title
-  - [ ] 1.1 [Sub-task description 1.1]
-  - [ ] 1.2 [Sub-task description 1.2]
-- [ ] 2.0 Parent Task Title
-  - [ ] 2.1 [Sub-task description 2.1]
-- [ ] 3.0 Parent Task Title (may not require sub-tasks if purely structural or configuration)
+- [ ] 1.0 [Parent Task Title - Clear Action]
+  - [ ] 1.1 [Specific sub-task with clear deliverable]
+  - [ ] 1.2 [Another specific sub-task]
+  - [ ] 1.3 [Testing sub-task if applicable]
+
+- [ ] 2.0 [Parent Task Title - Clear Action]
+  - [ ] 2.1 [Specific sub-task with clear deliverable]
+  - [ ] 2.2 [Another specific sub-task]
+  - [ ] 2.3 [Another specific sub-task]
+
+- [ ] 3.0 [Parent Task Title - Clear Action]
+  - [ ] 3.1 [Specific sub-task with clear deliverable]
+  - [ ] 3.2 [Another specific sub-task]
+
+[Continue for all tasks...]
+
+- [ ] X.0 Testing and Quality Assurance
+  - [ ] X.1 Write unit tests for all new functions/components
+  - [ ] X.2 Create integration tests for API endpoints
+  - [ ] X.3 Add E2E tests for critical user flows
+  - [ ] X.4 Verify all acceptance criteria from PRD are met
+
+## Definition of Done
+A task is considered complete when:
+- [ ] Code is implemented and working
+- [ ] Unit tests are written and passing
+- [ ] Code is properly typed (if using TypeScript)
+- [ ] Code follows project style guidelines
+- [ ] Feature meets acceptance criteria from PRD
+
+## Next Steps
+After completing all tasks:
+1. Run full test suite: `npm test`
+2. Manual testing of all user flows
+3. Code review
+4. Update documentation
+5. Deploy to staging environment
+
+---
+*Generated by Task List Generator from PRD*
 ```
 
-## Interaction Model
+## Special Instructions by Platform
 
-The process explicitly requires a pause after generating parent tasks to get user confirmation ("Go") before proceeding to generate the detailed sub-tasks. This ensures the high-level plan aligns with user expectations before diving into details.
+### For AI Agents with File System Access:
+- Save as: `/tasks/tasks-[prd-file-name].md`
+- Read PRD directly from provided file path
 
-## Target Audience
+### For AI Agents without File System Access:
+- Ask user to paste PRD content if not provided
+- Output task list in a code block
+- Instruct user to save as: `tasks-[feature-name].md` in `/tasks/` directory
 
-Assume the primary reader of the task list is a **junior developer** who will implement the feature.
+## Common Pitfalls to Avoid
+- **Don't skip the two-phase process** - Always wait for user confirmation
+- **Don't make tasks too vague** - "Implement feature" is not acceptable
+- **Don't forget testing tasks** - Every feature needs tests
+- **Don't ignore dependencies** - Order tasks logically
+- **Don't combine unrelated work** - Each task should have a single focus
+
+## Example Task Titles (Good vs Bad)
+
+### ❌ Bad Task Titles:
+- "Setup project" (too vague)
+- "Frontend work" (not specific)
+- "Fix bugs" (not actionable)
+- "Testing" (too broad)
+
+### ✅ Good Task Titles:
+- "1.0 Set up database schema for user profiles"
+  - "1.1 Create user_profiles table with required fields"
+  - "1.2 Add foreign key relationships to users table"
+- "2.0 Implement profile editing API endpoints"
+  - "2.1 Create GET /api/profile/:id endpoint"
+  - "2.2 Create PUT /api/profile/:id with validation"
+- "3.0 Build profile editing UI components"
+  - "3.1 Create ProfileEditForm component with field validation"
+  - "3.2 Implement image upload functionality"
+
+## Quality Checklist for AI
+Before presenting the final task list, verify:
+- [ ] Analyzed all sections of the PRD thoroughly
+- [ ] Generated parent tasks first and waited for confirmation
+- [ ] Each task is specific and actionable
+- [ ] Tasks are ordered by logical dependencies
+- [ ] Included relevant test files for each component
+- [ ] File paths follow project conventions
+- [ ] Every functional requirement from PRD is covered
+- [ ] Testing tasks are included
+- [ ] Used the exact format provided
+
+## Remember
+- This is a TWO-PHASE process - always wait for user confirmation
+- Tasks should be specific enough for a junior developer
+- Include all necessary details from the PRD
+- Testing is not optional - include test tasks
+- Follow the format exactly as provided
